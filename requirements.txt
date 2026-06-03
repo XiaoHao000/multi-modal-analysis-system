@@ -1,0 +1,64 @@
+# ===== LLM & Agent =====
+langgraph>=0.2
+langgraph-checkpoint-postgres>=3.0
+langchain>=0.3
+langchain-openai>=0.3
+langchain-community>=0.3
+langsmith
+
+# ===== Database (SQLAlchemy ORM, SQLite + PostgreSQL) =====
+sqlalchemy>=2.0
+aiosqlite>=0.20
+asyncpg>=0.30
+psycopg>=3.0
+psycopg-pool>=3.0
+
+# ===== Vector Store =====
+pymilvus>=2.4
+
+# ===== Web & API =====
+streamlit>=1.30
+fastapi>=0.115
+uvicorn[standard]>=0.30
+pydantic>=2.0
+pydantic-settings>=2.0
+python-multipart>=0.0.9
+
+# ===== Configuration =====
+python-dotenv>=1.0
+
+# ===== Auth =====
+passlib[bcrypt]>=1.7
+
+# ===== Migrations =====
+alembic>=1.14
+
+# ===== Caching & Rate Limiting =====
+redis>=5.0
+
+# ===== Resilience (retry/exponential-backoff built into bootstrap + circuit_breaker) =====
+
+# ===== Observability =====
+loguru>=0.7
+prometheus-fastapi-instrumentator>=7.0
+prometheus-client>=0.21
+
+# ===== Multi-Modal Processors =====
+pymupdf>=1.24              # PDF 文本 + 内嵌图片提取
+pdfplumber>=0.10           # PDF 文本提取 fallback（无 C 依赖）
+dashscope>=1.20            # 阿里云 DashScope SDK（ASR Paraformer + LLM 备选）
+openpyxl>=3.1              # Excel .xlsx 处理
+xlrd>=2.0                  # Excel .xls 处理
+python-docx>=1.1           # Word .docx 处理
+
+# ===== Dev / Test =====
+pytest>=8.0
+pytest-asyncio>=0.24
+httpx>=0.28
+
+# ===== MCP (Agent 工具协议标准化) =====
+mcp>=1.0
+fastmcp>=2.0
+
+# ===== Quality Evaluation (manual install for RAGAS) =====
+# pip install ragas>=0.2 datasets>=2.0

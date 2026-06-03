@@ -1,0 +1,11 @@
+__pycache__
+*.pyc
+.env
+*.db
+node_modules
+frontend-react/node_modules
+frontend-react/dist
+.git
+logs
+chroma_data
+milvus_data

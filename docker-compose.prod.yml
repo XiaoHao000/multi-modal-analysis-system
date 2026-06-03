@@ -1,0 +1,60 @@
+# 生产环境 Docker Compose 覆写配置
+# 与 docker-compose.yml 的差异：
+#   - ADMIN_PASSWORD_HASH 从环境变量读取，不给默认值（启动前必须配置）
+#   - Redis 开启密码认证
+#   - PostgreSQL 开启密码认证
+#   - 各服务加 CPU/内存限制
+#   - 日志驱动为 json-file + rotation
+#
+# 用法:
+#   export ADMIN_PASSWORD_HASH="..."  # 预生成 bcrypt hash，必填
+#   export REDIS_PASSWORD=$(openssl rand -hex 16)
+#   export DB_PASSWORD=$(openssl rand -hex 16)
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+services:
+  backend:
+    environment:
+      - ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH:?ADMIN_PASSWORD_HASH is required for production}
+      - DATABASE_URL=postgresql+asyncpg://postgres:${DB_PASSWORD}@postgres:5432/mdi
+      - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/0
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: 1G
+        reservations:
+          cpus: "0.5"
+          memory: 256M
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+  postgres:
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD:?DB_PASSWORD is required for production}
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  redis:
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:?REDIS_PASSWORD is required for production}
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "3"
